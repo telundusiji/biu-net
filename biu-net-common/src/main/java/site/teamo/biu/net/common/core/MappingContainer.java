@@ -1,5 +1,10 @@
 package site.teamo.biu.net.common.core;
 
+import com.alibaba.fastjson.JSON;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import site.teamo.biu.net.common.bean.ClientInfo;
 import site.teamo.biu.net.common.bean.ProxyServerInfo;
@@ -8,6 +13,7 @@ import site.teamo.biu.net.common.exception.IllegalInformationException;
 import site.teamo.biu.net.common.exception.UnregisteredClientException;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MappingContainer {
 
-    private static Map<String, ClientInfo> clientInfoMap = new ConcurrentHashMap<>();
+    private static Map<ClientInfo.Key, ClientInfo> clientInfoMap = new ConcurrentHashMap<>();
 
     private static Map<Integer, ProxyServerInfo> proxyServerInfoMap = new ConcurrentHashMap<>();
 
@@ -27,9 +33,9 @@ public class MappingContainer {
         if (clientInfo.getChannelHandlerContext() == null) {
             throw new IllegalInformationException("client登陆时，ChannelHandlerContext不能为null");
         }
-        ClientInfo client = clientInfoMap.get(clientInfo.getKey());
+        ClientInfo client = clientInfoMap.get(clientInfo.key());
         if (client == null) {
-            throw new UnregisteredClientException(client.getKey());
+            throw new UnregisteredClientException(JSON.toJSONString(client.key()));
         }
         client.setChannelHandlerContext(clientInfo.getChannelHandlerContext());
         client.setOnline(YesNo.YES.type);
@@ -40,10 +46,10 @@ public class MappingContainer {
             throw new IllegalInformationException("client注册信息是null");
         }
         clientInfo.check();
-        if (clientInfoMap.get(clientInfo.getKey()) != null) {
+        if (clientInfoMap.get(clientInfo.getId()) != null) {
             return;
         }
-        clientInfoMap.put(clientInfo.getKey(), clientInfo);
+        clientInfoMap.put(clientInfo.key(), clientInfo);
     }
 
     public static void registerProxyServer(ProxyServerInfo proxyServerInfo) throws IllegalInformationException, UnregisteredClientException {
@@ -58,22 +64,28 @@ public class MappingContainer {
         if (proxyServer != null) {
             return;
         }
-        proxyServerInfoMap.put(proxyServerInfo.getPort(),proxyServerInfo);
+        proxyServerInfoMap.put(proxyServerInfo.getPort(), proxyServerInfo);
     }
 
-    public static ClientInfo getClientByClientKey(String key){
-        return clientInfoMap.get(key);
+    public static ClientInfo getClientByClientName(String name) {
+        return clientInfoMap.get(ClientInfo.Key.builder().name(name).build());
     }
 
-    public static ClientInfo getClientByProxyServerPort(int port){
+    public static ClientInfo getClientByClientId(String id) {
+        return clientInfoMap.get(ClientInfo.Key.builder().id(id).build());
+    }
+
+    public static ClientInfo getClientByProxyServerPort(int port) {
         ProxyServerInfo info = proxyServerInfoMap.get(port);
-        if(info==null){
+        if (info == null) {
             return null;
         }
         return clientInfoMap.get(info.getClientKey());
     }
 
-    public static ProxyServerInfo getProxyServer(int port){
+    public static ProxyServerInfo getProxyServer(int port) {
         return proxyServerInfoMap.get(port);
     }
+
+
 }

@@ -2,7 +2,7 @@ package site.teamo.biu.net.server;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
-import site.teamo.biu.net.common.handler.BiuNetCodec;
+import site.teamo.biu.net.common.handler.BiuNetMessageCodec;
 import site.teamo.biu.net.common.handler.PrintDecoder;
 import site.teamo.biu.net.server.handler.BiuNetServerHandler;
 
@@ -17,7 +17,7 @@ public class BiuNetServerHandlerInitializer extends ChannelInitializer<SocketCha
     protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline()
                 .addLast(new PrintDecoder())
-                .addLast(new BiuNetCodec())
+                .addLast(new BiuNetMessageCodec())
                 .addLast(new BiuNetServerHandler());
     }
 }

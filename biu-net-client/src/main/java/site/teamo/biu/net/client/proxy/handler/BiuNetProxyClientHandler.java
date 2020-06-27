@@ -6,14 +6,8 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.Attribute;
-import site.teamo.biu.net.client.handler.BiuNetClientHandler;
-import site.teamo.biu.net.common.bean.ClientInfo;
 import site.teamo.biu.net.common.bean.ProxyClientInfo;
-import site.teamo.biu.net.common.bean.ProxyServerInfo;
 import site.teamo.biu.net.common.constant.BiuNetConstant;
-import site.teamo.biu.net.common.core.ClientInfoContainer;
-
-import java.nio.charset.Charset;
 
 /**
  * @author 爱做梦的锤子

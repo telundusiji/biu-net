@@ -9,7 +9,7 @@ import io.netty.util.Attribute;
 import site.teamo.biu.net.common.bean.ClientInfo;
 import site.teamo.biu.net.common.bean.ProxyServerInfo;
 import site.teamo.biu.net.common.constant.BiuNetConstant;
-import site.teamo.biu.net.common.core.ClientInfoContainer;
+import site.teamo.biu.net.common.core.MappingContainer;
 
 import java.nio.charset.Charset;
 
@@ -21,7 +21,7 @@ public class BiuNetProxyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Attribute<ProxyServerInfo> attr = ctx.channel().attr(BiuNetConstant.proxyServerInfo);
-        ClientInfo clientInfo = ClientInfoContainer.get(attr.get().getClientKey());
+        ClientInfo clientInfo = MappingContainer.getClientByClientId(attr.get().getClientKey());
         if(clientInfo==null){
             ctx.writeAndFlush(Unpooled.copiedBuffer("client不在线！".getBytes(Charset.defaultCharset())))
                     .addListener(ChannelFutureListener.CLOSE);

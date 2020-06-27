@@ -14,16 +14,19 @@ public class BiuNetClient {
 
     private String serverHost;
     private int port;
-    private String key;
+    private String name;
+    private String password;
 
-    private BiuNetClient(String serverHost, int port, String key) {
+
+    public BiuNetClient(String serverHost, int port, String name, String password) {
         this.serverHost = serverHost;
         this.port = port;
-        this.key = key;
+        this.name = name;
+        this.password = password;
     }
 
-    public static BiuNetClient open(String serverHost, int port, String key){
-        return new BiuNetClient(serverHost,port,key);
+    public static BiuNetClient open(String serverHost, int port, String name, String password) {
+        return new BiuNetClient(serverHost, port, name, password);
     }
 
     public void start() throws InterruptedException {
@@ -34,12 +37,12 @@ public class BiuNetClient {
 
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new BiuNetClientHandlerInitializer(key));
+                    .handler(new BiuNetClientHandlerInitializer(name,password));
 
             ChannelFuture future = bootstrap.connect(serverHost, port).sync();
             future.channel().closeFuture().sync();
 
-        }finally {
+        } finally {
             group.shutdownGracefully();
         }
     }
