@@ -23,7 +23,8 @@ public class BiuNetClientTest {
 
     @Test
     public void open() throws InterruptedException {
-        BiuNetClient.open("localhost",8080,"abc","15a3303e-3f4d-4cac-9bc2-9757f093d759").start();
+//        BiuNetClient.open("localhost",8080,"abc","15a3303e-3f4d-4cac-9bc2-9757f093d759").start();
+        BiuNetClient.open("localhost",8081,"mypc","12345").start();
     }
 
     @Test

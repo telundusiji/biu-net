@@ -25,12 +25,12 @@ public class ForwardResponse extends BiuNetMessage{
     }
 
     @Override
-    public void read(ByteBuf byteBuf) throws BadMessageException {
+    public void readFromByteBuf(ByteBuf byteBuf) throws BadMessageException {
 
     }
 
     @Override
-    public void write(ByteBuf byteBuf) {
+    public void writeToByteBuf(ByteBuf byteBuf) {
 
     }
 

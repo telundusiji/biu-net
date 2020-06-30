@@ -53,9 +53,9 @@ public class LoginResponse extends BiuNetMessage{
     }
 
     @Override
-    public void read(ByteBuf byteBuf) throws BadMessageException {
+    public void readFromByteBuf(ByteBuf byteBuf) throws BadMessageException {
         if(byteBuf.readableBytes()<(36+4)){
-            throw new BadMessageException("与协议长度不一致");
+            throw new BadMessageException("与协议长度不一致期待："+72+"实际："+byteBuf.readableBytes());
         }
         CharSequence name = byteBuf.readCharSequence(36, Charset.defaultCharset());
         int isSuccess = byteBuf.readInt();
@@ -65,7 +65,7 @@ public class LoginResponse extends BiuNetMessage{
     }
 
     @Override
-    public void write(ByteBuf byteBuf) {
+    public void writeToByteBuf(ByteBuf byteBuf) {
         byteBuf.writeCharSequence(new String(name),Charset.defaultCharset());
         byteBuf.writeInt(isSuccess);
     }
@@ -84,7 +84,10 @@ public class LoginResponse extends BiuNetMessage{
             if(StringUtils.isBlank(name)||isSuccess==null){
                 throw new ProtocolInconsistencyException("名称和结果信息为空");
             }
-            name.trim();
+            name = name.trim();
+            if(name.length()>36){
+                throw new ProtocolInconsistencyException("名字长度超出36位");
+            }
         }
 
         public static SimpleProtocol parse(String protocol){

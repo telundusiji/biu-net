@@ -4,6 +4,10 @@ package site.teamo.biu.net.common.exception;
  * @author 爱做梦的锤子
  * @create 2020/6/23
  */
+
+/**
+ * 未注册的客户端异常
+ */
 public class UnregisteredClientException extends Exception{
     public UnregisteredClientException() {
         super();

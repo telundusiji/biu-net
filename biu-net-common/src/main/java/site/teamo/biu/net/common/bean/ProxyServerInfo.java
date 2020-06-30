@@ -14,7 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ProxyServerInfo {
-    private String name;
-    private String clientKey;
+    private String id;
+    private String clientId;
+    private String host;
     private int port;
+    private String targetHost;
+    private int targetPort;
 }

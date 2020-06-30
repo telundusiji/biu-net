@@ -42,9 +42,9 @@ public abstract class BiuNetMessage {
 
     public abstract void setProtocol(BiuNetMessage.Protocol protocol) throws ProtocolInconsistencyException;
 
-    public abstract void read(ByteBuf byteBuf) throws BadMessageException;
+    public abstract void readFromByteBuf(ByteBuf byteBuf) throws BadMessageException;
 
-    public abstract void write(ByteBuf byteBuf);
+    public abstract void writeToByteBuf(ByteBuf byteBuf);
 
     public byte[] getContent() {
         return content == null ? new byte[0] : content;

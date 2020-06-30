@@ -4,6 +4,10 @@ package site.teamo.biu.net.common.exception;
  * @author 爱做梦的锤子
  * @create 2020/6/24
  */
+
+/**
+ * 损坏的数据异常
+ */
 public class BadMessageException extends Exception {
     public BadMessageException() {
         super();

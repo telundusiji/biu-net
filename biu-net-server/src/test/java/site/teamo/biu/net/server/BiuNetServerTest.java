@@ -30,9 +30,9 @@ public class BiuNetServerTest {
             }
         }).start();
         BiuNetProxyServer.open(ProxyServerInfo.builder()
-                .name("测试代理")
+                .id("测试代理")
                 .port(8081)
-                .clientKey("15a3303e-3f4d-4cac-9bc2-9757f093d759")
+                .clientId("15a3303e-3f4d-4cac-9bc2-9757f093d759")
                 .build()).start();
     }
 

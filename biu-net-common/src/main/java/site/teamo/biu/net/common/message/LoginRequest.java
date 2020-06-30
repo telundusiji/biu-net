@@ -49,9 +49,9 @@ public class LoginRequest extends BiuNetMessage {
     }
 
     @Override
-    public void read(ByteBuf byteBuf) throws BadMessageException {
+    public void readFromByteBuf(ByteBuf byteBuf) throws BadMessageException {
         if(byteBuf.readableBytes()<72){
-            throw new BadMessageException("与协议长度不一致期待："+72*2+"实际："+byteBuf.readableBytes());
+            throw new BadMessageException("与协议长度不一致期待："+72+"实际："+byteBuf.readableBytes());
         }
         CharSequence name = byteBuf.readCharSequence(36, Charset.defaultCharset());
         CharSequence password = byteBuf.readCharSequence(36, Charset.defaultCharset());
@@ -61,7 +61,7 @@ public class LoginRequest extends BiuNetMessage {
     }
 
     @Override
-    public void write(ByteBuf byteBuf) {
+    public void writeToByteBuf(ByteBuf byteBuf) {
         byteBuf.writeCharSequence(new String(name),Charset.defaultCharset());
         byteBuf.writeCharSequence(new String(password),Charset.defaultCharset());
     }
@@ -79,8 +79,8 @@ public class LoginRequest extends BiuNetMessage {
             if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
                 throw new ProtocolInconsistencyException("名称或密码为空");
             }
-            name.trim();
-            password.trim();
+            name = name.trim();
+            password = password.trim();
             if (name.length() > 36 || password.length() > 36) {
                 throw new ProtocolInconsistencyException("名称或密码长度超出36位限制");
             }

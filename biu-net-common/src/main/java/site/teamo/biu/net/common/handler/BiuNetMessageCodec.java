@@ -6,11 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import site.teamo.biu.net.common.constant.BiuNetConstant;
 import site.teamo.biu.net.common.enums.BiuNetMessageHead;
-import site.teamo.biu.net.common.message.BiuNetMessage;
-import site.teamo.biu.net.common.message.LoginRequest;
-import site.teamo.biu.net.common.message.LoginResponse;
+import site.teamo.biu.net.common.message.*;
 import site.teamo.biu.net.common.util.BiuNetMessageUtil;
 
 import java.nio.charset.Charset;
@@ -42,11 +39,13 @@ public class BiuNetMessageCodec extends ByteToMessageCodec<BiuNetMessage> {
                 biuNetMessage = new LoginResponse();
                 break;
             case FORWARD_REQUEST:
+                biuNetMessage = new ForwardRequest();
                 break;
             case FORWARD_RESPONSE:
+                biuNetMessage = new ForwardResponse();
                 break;
         }
-        biuNetMessage.read(in);
+        biuNetMessage.readFromByteBuf(in);
         biuNetMessage.setContent(BiuNetMessageUtil.read(in));
         LOGGER.info("message[ {} byte]\n{}",readableBytes,biuNetMessage.toString(Charset.defaultCharset()));
         out.add(biuNetMessage);
@@ -55,7 +54,7 @@ public class BiuNetMessageCodec extends ByteToMessageCodec<BiuNetMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, BiuNetMessage msg, ByteBuf out) throws Exception {
         out.writeInt(msg.getHead());
-        msg.write(out);
+        msg.writeToByteBuf(out);
         out.writeBytes(msg.getContent());
     }
 
@@ -72,7 +71,7 @@ public class BiuNetMessageCodec extends ByteToMessageCodec<BiuNetMessage> {
     public static ByteBuf messageToByteBuf(BiuNetMessage message) {
         ByteBuf buf = Unpooled.buffer(64, Integer.MAX_VALUE);
         buf.writeInt(message.getHead());
-        message.write(buf);
+        message.writeToByteBuf(buf);
         buf.writeBytes(message.getContent());
         return buf;
     }

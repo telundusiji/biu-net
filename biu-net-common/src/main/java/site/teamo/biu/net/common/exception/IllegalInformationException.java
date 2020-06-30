@@ -4,6 +4,10 @@ package site.teamo.biu.net.common.exception;
  * @author 爱做梦的锤子
  * @create 2020/6/23
  */
+
+/**
+ * 非法的信息异常
+ */
 public class IllegalInformationException extends Exception {
     public IllegalInformationException() {
         super();

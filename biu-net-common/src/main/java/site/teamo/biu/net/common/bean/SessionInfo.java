@@ -13,13 +13,16 @@ import java.util.UUID;
  * @create 2020/6/23
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class SessionInfo {
 
-    private String Id = UUID.randomUUID().toString();
+    private String id;
 
     private ChannelHandlerContext channelHandlerContext;
+
+    public SessionInfo(){
+        this.id = UUID.randomUUID().toString();
+    }
 
 }

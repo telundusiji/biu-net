@@ -4,6 +4,10 @@ package site.teamo.biu.net.common.exception;
  * @author 爱做梦的锤子
  * @create 2020/6/24
  */
+
+/**
+ * 协议不一致异常
+ */
 public class ProtocolInconsistencyException extends Exception {
     public ProtocolInconsistencyException() {
         super();

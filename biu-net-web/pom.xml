@@ -10,7 +10,50 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>biu-net-web</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>biu-net-web-api</module>
+        <module>biu-net-web-ui</module>
+        <module>biu-net-web-service</module>
+        <module>biu-net-web-dao</module>
+        <module>biu-net-web-pojo</module>
+        <module>biu-net-web-util</module>
+    </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>site.teamo.biu</groupId>
+                <artifactId>biu-net-web-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.teamo.biu</groupId>
+                <artifactId>biu-net-web-ui</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.teamo.biu</groupId>
+                <artifactId>biu-net-web-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.teamo.biu</groupId>
+                <artifactId>biu-net-web-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.teamo.biu</groupId>
+                <artifactId>biu-net-web-pojo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.teamo.biu</groupId>
+                <artifactId>biu-net-web-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!--        本地模块依赖-->

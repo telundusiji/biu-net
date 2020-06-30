@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import site.teamo.biu.net.common.enums.YesNo;
 import site.teamo.biu.net.common.exception.IllegalInformationException;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ public class ClientInfo {
     private String password;
     private ChannelHandlerContext channelHandlerContext;
     private int online = YesNo.NO.type;
+    private Date loginTime;
 
     public void check() throws IllegalInformationException {
         if(StringUtils.isBlank(id)){
