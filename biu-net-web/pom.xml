@@ -61,10 +61,12 @@
         <dependency>
             <groupId>site.teamo.biu</groupId>
             <artifactId>biu-net-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>site.teamo.biu</groupId>
             <artifactId>biu-net-server</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!--        springboot核心依赖-->

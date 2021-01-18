@@ -1,0 +1,10 @@
+biu-net:
+  client-info:
+    id: 461875bb-e5da-4a10-8d19-68613e18a2db
+    name: pc-xxx
+    server-host: 127.0.0.1
+    server-port: 8081
+    password: 123456
+
+server:
+  port: 8070

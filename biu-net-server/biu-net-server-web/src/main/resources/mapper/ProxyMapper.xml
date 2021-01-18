@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="site.teamo.biu.net.server.web.dao.ProxyMapper" >
+  <resultMap id="BaseResultMap" type="site.teamo.biu.net.common.info.ProxyInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="proxy_server_id" property="proxyServerId" jdbcType="VARCHAR" />
+    <result column="target_host" property="targetHost" jdbcType="VARCHAR" />
+    <result column="target_port" property="targetPort" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>
