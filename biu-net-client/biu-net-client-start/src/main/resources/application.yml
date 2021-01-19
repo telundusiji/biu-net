@@ -8,3 +8,7 @@ biu-net:
 
 server:
   port: 8070
+
+logging:
+  level:
+    site: info

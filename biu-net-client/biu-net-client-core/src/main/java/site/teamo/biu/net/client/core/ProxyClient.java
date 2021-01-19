@@ -43,21 +43,26 @@ public class ProxyClient {
         if (networkClient.isStarted()) {
             return;
         }
-        networkClient.start(true);
+        networkClient.start(false);
+    }
 
+    public void stop() {
+        if (networkClient != null) {
+            networkClient.shutdown();
+        }
     }
 
     public void sendPackageData(PackageData.Request request, long timeout, TimeUnit timeUnit) {
-        BiuNetApplicationUtil.execute(() -> {
-            long duration = timeUnit.toMillis(timeout);
-            long start = System.currentTimeMillis();
-            while (System.currentTimeMillis() - start < duration) {
-                if (networkClient.getChannel() != null) {
-                    networkClient.getChannel().writeAndFlush(request.getData());
-                    break;
-                }
+
+        long duration = timeUnit.toMillis(timeout);
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() - start < duration) {
+            if (networkClient.getChannel() != null && networkClient.getChannel().isActive()) {
+                networkClient.getChannel().writeAndFlush(request.getData());
+                break;
             }
-        });
+        }
+
     }
 
     @Data

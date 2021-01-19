@@ -12,12 +12,12 @@ import site.teamo.biu.net.client.core.ClientContext;
 import site.teamo.biu.net.client.core.ProxyClient;
 import site.teamo.biu.net.common.coder.BiuNetMessageDecoder;
 import site.teamo.biu.net.common.coder.BiuNetMessageEncoder;
-import site.teamo.biu.net.common.util.HandlerUtil;
 import site.teamo.biu.net.common.message.BiuNetMessage;
+import site.teamo.biu.net.common.message.CloseProxyClient;
 import site.teamo.biu.net.common.message.Login;
 import site.teamo.biu.net.common.message.PackageData;
-import site.teamo.biu.net.common.util.BiuNetApplicationUtil;
 import site.teamo.biu.net.common.util.BiuNetBeanUtil;
+import site.teamo.biu.net.common.util.HandlerUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,8 +38,8 @@ public class ClientHandlerInitializer extends ChannelInitializer<SocketChannel> 
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         socketChannel.pipeline()
                 .addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4))
-                .addLast(new BiuNetMessageDecoder(client.getNetworkClient().name))
-                .addLast(new BiuNetMessageEncoder(client.getNetworkClient().name))
+                .addLast(new BiuNetMessageDecoder(client.getInfo().getName()))
+                .addLast(new BiuNetMessageEncoder(client.getInfo().getName()))
                 .addLast(new LengthFieldPrepender(4))
                 .addLast(new ClientHandler());
 
@@ -51,21 +51,32 @@ public class ClientHandlerInitializer extends ChannelInitializer<SocketChannel> 
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             BiuNetMessage message = BiuNetMessage.class.cast(msg);
             switch (message.getType()) {
+                case PING:
+                    HandlerUtil.handlePingMessage(ctx, message, false);
+                    break;
                 case LOGIN_RESPONSE:
-                    BiuNetApplicationUtil.execute(handleLoginResponse(ctx, message));
+                    handleLoginResponse(ctx, message);
                     break;
                 case PACKAGE_DATA_REQUEST:
-                    BiuNetApplicationUtil.execute(handlePackageDataRequest(ctx, message));
+                    handlePackageDataRequest(ctx, message);
+                    break;
+                case CLOSE_PROXY_CLIENT:
+                    handleCloseProxyClient(ctx, message);
                     break;
                 default:
-                    BiuNetApplicationUtil.execute(HandlerUtil.unknown(ctx, message));
+                    HandlerUtil.handleUnknownMessage(ctx, message);
                     break;
             }
         }
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
-            log.info("Client channel active: {}", ctx.channel().id().asLongText());
+            ctx.writeAndFlush(Login.Request.builder()
+                    .id(client.getInfo().getId())
+                    .name(client.getInfo().getName())
+                    .password(client.getInfo().getPassword())
+                    .build()
+                    .buildData());
             super.channelActive(ctx);
         }
 
@@ -82,10 +93,8 @@ public class ClientHandlerInitializer extends ChannelInitializer<SocketChannel> 
          * @param message
          * @return
          */
-        public Runnable handleLoginResponse(ChannelHandlerContext ctx, BiuNetMessage<Login.Response> message) {
-            return () -> {
-                log.info("Client login {}, {}", message.getContent().getResult(), message.getContent().getMsg());
-            };
+        public void handleLoginResponse(ChannelHandlerContext ctx, BiuNetMessage<Login.Response> message) {
+            log.info("Client login {}, {}", message.getContent().getResult(), message.getContent().getMsg());
         }
 
         /**
@@ -95,18 +104,25 @@ public class ClientHandlerInitializer extends ChannelInitializer<SocketChannel> 
          * @param message
          * @return
          */
-        public Runnable handlePackageDataRequest(ChannelHandlerContext ctx, BiuNetMessage<PackageData.Request> message) {
-            return () -> {
-                try {
-                    ClientContext context = ClientContext.getInstance();
-                    PackageData.Request request = message.getContent();
-                    ProxyClient.Info info = BiuNetBeanUtil.copyBean(request, ProxyClient.Info.class);
-                    ProxyClient proxyClient = context.getProxyClient(info);
-                    proxyClient.sendPackageData(message.getContent(), 30, TimeUnit.SECONDS);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            };
+        public void handlePackageDataRequest(ChannelHandlerContext ctx, BiuNetMessage<PackageData.Request> message) {
+            try {
+                ClientContext context = ClientContext.getInstance();
+                PackageData.Request request = message.getContent();
+                ProxyClient.Info info = BiuNetBeanUtil.copyBean(request, ProxyClient.Info.class);
+                ProxyClient proxyClient = context.getProxyClient(info);
+                proxyClient.sendPackageData(message.getContent(), 30, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public void handleCloseProxyClient(ChannelHandlerContext ctx, BiuNetMessage<CloseProxyClient.Data> message) {
+            ClientContext context = ClientContext.getInstance();
+            String proxyCtxId = message.getContent().proxyCtxId;
+            ProxyClient proxyClient = context.getAndRemoveProxyClient(proxyCtxId);
+            if (proxyClient != null) {
+                proxyClient.stop();
+            }
         }
 
     }

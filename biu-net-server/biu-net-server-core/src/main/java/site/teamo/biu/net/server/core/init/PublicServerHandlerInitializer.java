@@ -10,11 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import site.teamo.biu.net.common.coder.BiuNetMessageDecoder;
 import site.teamo.biu.net.common.coder.BiuNetMessageEncoder;
-import site.teamo.biu.net.common.util.HandlerUtil;
 import site.teamo.biu.net.common.message.BiuNetMessage;
 import site.teamo.biu.net.common.message.Login;
 import site.teamo.biu.net.common.message.PackageData;
-import site.teamo.biu.net.common.util.BiuNetApplicationUtil;
+import site.teamo.biu.net.common.util.HandlerUtil;
 import site.teamo.biu.net.server.core.MockClient;
 import site.teamo.biu.net.server.core.Proxy;
 import site.teamo.biu.net.server.core.PublicServer;
@@ -51,15 +50,16 @@ public class PublicServerHandlerInitializer extends ChannelInitializer<SocketCha
             BiuNetMessage message = BiuNetMessage.class.cast(msg);
             switch (message.getType()) {
                 case PING:
+                    HandlerUtil.handlePingMessage(ctx, message, true);
                     break;
                 case LOGIN_REQUEST:
-                    BiuNetApplicationUtil.execute(handleLoginRequest(ctx, message));
+                    handleLoginRequest(ctx, message);
                     break;
                 case PACKAGE_DATA_RESPONSE:
-                    BiuNetApplicationUtil.execute(handlePackageDataResponse(ctx, message));
+                    handlePackageDataResponse(ctx, message);
                     break;
                 default:
-                    BiuNetApplicationUtil.execute(HandlerUtil.unknown(ctx, message));
+                    HandlerUtil.handleUnknownMessage(ctx, message);
                     break;
             }
         }
@@ -72,36 +72,37 @@ public class PublicServerHandlerInitializer extends ChannelInitializer<SocketCha
          * @param message
          * @return
          */
-        public Runnable handleLoginRequest(ChannelHandlerContext ctx, BiuNetMessage<Login.Request> message) {
-            return () -> {
+        public void handleLoginRequest(ChannelHandlerContext ctx, BiuNetMessage<Login.Request> message) {
+            String id = message.getContent().getId();
+            String password = message.getContent().getPassword();
+            ServerContext serverContext = ServerContext.getInstance();
+            MockClient client = serverContext.getClient(id);
 
-                String id = message.getContent().getId();
-                String password = message.getContent().getPassword();
-                ServerContext serverContext = ServerContext.getInstance();
-                MockClient client = serverContext.getClient(id);
-
-                if (client == null || !StringUtils.equals(client.getInfo().getPassword(), password)) {
-                    if (log.isDebugEnabled()) {
-                        log.info("Client login with wrong id or password");
-                    }
-                    ctx.writeAndFlush(Login.Response.failed("Wrong id or password"));
-                    return;
+            if (client == null || !StringUtils.equals(client.getInfo().getPassword(), password)) {
+                if (log.isDebugEnabled()) {
+                    log.info("Client login with wrong id or password");
                 }
-                serverContext.onLine(id, ctx);
-                log.info("Client login {}, {}", id, message.getContent().getName());
-                ctx.channel().writeAndFlush(Login.Response.success());
-            };
+                ctx.writeAndFlush(Login.Response.failed("Wrong id or password"));
+                return;
+            }
+            serverContext.onLine(id, ctx);
+            log.info("Client login {}, {}", id, message.getContent().getName());
+            ctx.channel().writeAndFlush(Login.Response.success());
         }
 
-        public Runnable handlePackageDataResponse(ChannelHandlerContext ctx, BiuNetMessage<PackageData.Response> message) {
-            return () -> {
-                ServerContext serverContext = ServerContext.getInstance();
-                Proxy proxy = serverContext.getProxy(message.getContent().getProxyServerPort());
-                ChannelHandlerContext proxyServerCtx = proxy.getProxyServer().getCtxMap().get(message.getContent().getProxyCtxId());
-                if (proxyServerCtx != null) {
-                    proxyServerCtx.writeAndFlush(message.getContent().getData());
+        public void handlePackageDataResponse(ChannelHandlerContext ctx, BiuNetMessage<PackageData.Response> message) {
+            ServerContext serverContext = ServerContext.getInstance();
+            Proxy proxy = serverContext.getProxy(message.getContent().getProxyServerPort());
+            ChannelHandlerContext proxyServerCtx = proxy.getProxyServer().getCtxMap().get(message.getContent().getProxyCtxId());
+            if (proxyServerCtx != null) {
+                proxyServerCtx.writeAndFlush(message.getContent().getData());
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.warn("proxy server ctx is null for proxyCtxId: {}, proxyServerPort: {}"
+                            , message.getContent().getProxyCtxId()
+                            , message.getContent().getProxyServerPort());
                 }
-            };
+            }
         }
 
     }

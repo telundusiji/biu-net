@@ -57,20 +57,13 @@ public class NetworkServer extends AbstractNetworkService {
                         Thread.sleep(5000L);
                     }
                     first = false;
-                    EventLoopGroup bossGroup = new NioEventLoopGroup();
-                    EventLoopGroup workerGroup = new NioEventLoopGroup();
-                    try {
-                        ServerBootstrap bootstrap = new ServerBootstrap();
-                        bootstrap.group(bossGroup, workerGroup)
-                                .channel(NioServerSocketChannel.class)
-                                .childHandler(initializer);
+                    ServerBootstrap bootstrap = new ServerBootstrap();
+                    bootstrap.group(BiuNetApplicationUtil.getBossGroup(), BiuNetApplicationUtil.getWorkerGroup())
+                            .channel(NioServerSocketChannel.class)
+                            .childHandler(initializer);
 
-                        ChannelFuture future = bootstrap.bind(port).sync();
-                        future.channel().closeFuture().sync();
-                    } finally {
-                        bossGroup.shutdownGracefully();
-                        workerGroup.shutdownGracefully();
-                    }
+                    ChannelFuture future = bootstrap.bind(port).sync();
+                    future.channel().closeFuture().sync();
                     /**
                      * 当Server启动方式不是长久时，则尝试一次后修改状态为停止，跳出循环
                      */

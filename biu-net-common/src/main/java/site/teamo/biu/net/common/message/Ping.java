@@ -11,5 +11,11 @@ public interface Ping {
         public Data(String host) {
             this.host = host;
         }
+
+        public static BiuNetMessage<Ping.Data> buildData(String host) {
+            return new BiuNetMessage<Ping.Data>()
+                    .setType(MessageType.PING)
+                    .setContent(new Ping.Data(host));
+        }
     }
 }

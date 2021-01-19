@@ -26,5 +26,7 @@ CREATE TABLE if not exists proxy(
     ) COMMENT = '代理 ';
 
 INSERT INTO biu_net.client (id, name, password) VALUES ('461875bb-e5da-4a10-8d19-68613e18a2db', 'pc-xxx', '123456');
-INSERT INTO biu_net.proxy (id, client_id, proxy_server_id, target_host, target_port, enable) VALUES ('c5ff2170-3e97-46f5-aa87-3156db3a95c3', '461875bb-e5da-4a10-8d19-68613e18a2db', 'f105a731-80c4-47eb-99c7-72878e30dcdc', 'te-amo.site', 80, 1);
+INSERT INTO biu_net.proxy (id, client_id, proxy_server_id, target_host, target_port, enable) VALUES ('c5ff2170-3e97-46f5-aa87-3156db3a95c3', '461875bb-e5da-4a10-8d19-68613e18a2db', 'f105a731-80c4-47eb-99c7-72878e30dcdc', 'te-amo.site', 9010, 1);
+INSERT INTO biu_net.proxy (id, client_id, proxy_server_id, target_host, target_port, enable) VALUES ('c5ff2170-3e97-46f5-aa87-3156db3a95c4', '461875bb-e5da-4a10-8d19-68613e18a2db', 'f105a731-80c4-47eb-99c7-72878e30dcdd', 'te-amo.site', 80, 1);
 INSERT INTO biu_net.proxy_server (id, port) VALUES ('f105a731-80c4-47eb-99c7-72878e30dcdc', 9091);
+INSERT INTO biu_net.proxy_server (id, port) VALUES ('f105a731-80c4-47eb-99c7-72878e30dcdd', 9092);

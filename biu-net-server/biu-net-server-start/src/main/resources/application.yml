@@ -9,7 +9,7 @@ biu-net:
 logging:
   level:
     org: info
-    site.teamo.biu.net.server.web.dao: debug
+    site: info
 
 spring:
   datasource:

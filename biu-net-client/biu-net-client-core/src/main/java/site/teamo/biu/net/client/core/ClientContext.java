@@ -36,7 +36,18 @@ public class ClientContext {
             proxyClientMap.put(proxyClient.getInfo().getProxyCtxId(), proxyClient);
             proxyClient.start();
         }
+        if (!proxyClient.getNetworkClient().isStarted()) {
+            proxyClient.start();
+        }
         return proxyClient;
+    }
+
+    public ProxyClient getProxyClient(String proxyCtxId) {
+        return proxyClientMap.get(proxyCtxId);
+    }
+
+    public ProxyClient getAndRemoveProxyClient(String proxyCtxId) {
+        return proxyClientMap.remove(proxyCtxId);
     }
 
 }

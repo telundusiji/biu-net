@@ -50,6 +50,9 @@ public class BiuNetMessageDecoder extends ByteToMessageDecoder {
                 case PACKAGE_DATA_RESPONSE:
                     message.setContent(((JSONObject) message.getContent()).toJavaObject(PackageData.Response.class));
                     break;
+                case CLOSE_PROXY_CLIENT:
+                    message.setContent(((JSONObject) message.getContent()).toJavaObject(CloseProxyClient.Data.class));
+                    break;
             }
         } catch (Exception e) {
             if (log.isDebugEnabled()) {

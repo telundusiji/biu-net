@@ -11,7 +11,6 @@ import site.teamo.biu.net.client.core.ClientContext;
 import site.teamo.biu.net.client.core.ProxyClient;
 import site.teamo.biu.net.common.message.BiuNetMessage;
 import site.teamo.biu.net.common.message.PackageData;
-import site.teamo.biu.net.common.util.BiuNetApplicationUtil;
 
 /**
  * @author 爱做梦的锤子
@@ -39,32 +38,14 @@ public class ProxyClientHandlerInitializer extends ChannelInitializer<SocketChan
     private class ProxyClientHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            log.info("Proxy read data: {}", ((byte[]) msg).length);
-            BiuNetApplicationUtil.execute(handleTargetResponseData(ctx, msg));
-        }
+            BiuNetMessage<PackageData.Response> message = PackageData.Response.builder()
+                    .proxyCtxId(proxyClient.getInfo().getProxyCtxId())
+                    .proxyServerPort(proxyClient.getInfo().getProxyServerPort())
+                    .data((byte[]) msg)
+                    .build().buildData();
 
-        @Override
-        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-            log.info("Proxy client channel inactive");
-            super.channelInactive(ctx);
-        }
-
-        /**
-         * 处理目标服务返回的数据
-         *
-         * @return
-         */
-        private Runnable handleTargetResponseData(ChannelHandlerContext ctx, Object msg) {
-            return () -> {
-                BiuNetMessage<PackageData.Response> message = PackageData.Response.builder()
-                        .proxyCtxId(proxyClient.getInfo().getProxyCtxId())
-                        .proxyServerPort(proxyClient.getInfo().getProxyServerPort())
-                        .data((byte[]) msg)
-                        .build().buildData();
-
-                ClientContext clientContext = ClientContext.getInstance();
-                clientContext.getClient().getNetworkClient().getChannel().writeAndFlush(message);
-            };
+            ClientContext clientContext = ClientContext.getInstance();
+            clientContext.getClient().getNetworkClient().getChannel().writeAndFlush(message);
         }
     }
 }

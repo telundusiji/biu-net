@@ -21,6 +21,12 @@ public interface Login {
         private String id;
         private String name;
         private String password;
+
+        public BiuNetMessage<Request> buildData() {
+            return new BiuNetMessage<Request>()
+                    .setType(MessageType.LOGIN_REQUEST)
+                    .setContent(this);
+        }
     }
 
     @Data

@@ -4,8 +4,6 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.Data;
 import lombok.Getter;
@@ -85,25 +83,26 @@ public class NetworkClient extends AbstractNetworkService {
                         Thread.sleep(5000L);
                     }
                     first = false;
-                    EventLoopGroup group = new NioEventLoopGroup();
-                    try {
-                        Bootstrap bootstrap = new Bootstrap();
-                        bootstrap.group(group)
-                                .channel(NioSocketChannel.class)
-                                .handler(initializer);
+                    Bootstrap bootstrap = new Bootstrap();
+                    bootstrap.group(BiuNetApplicationUtil.getWorkerGroup())
+                            .channel(NioSocketChannel.class)
+                            .handler(initializer);
 
-                        ChannelFuture future = bootstrap.connect(host, port).sync();
-                        Channel channel = future.channel();
-                        this.channel = channel;
-                        channel.closeFuture().sync();
-                    } finally {
-                        group.shutdownGracefully();
-                    }
+                    ChannelFuture future = bootstrap.connect(host, port).sync();
+                    Channel channel = future.channel();
+                    log.info("The client[{}] connect to {}:{} started", name, host, port);
+                    this.channel = channel;
+                    channel.closeFuture().sync();
                     /**
                      * 当Server启动方式不是长久时，则尝试一次后修改状态为停止，跳出循环
                      */
                     if (!permanent) {
                         status = Status.STOPPED;
+                    }
+
+                } catch (InterruptedException e) {
+                    if (log.isDebugEnabled()) {
+                        log.error("The client[{}] connect to {}:{} interrupted with permanent = {}", name, host, port, permanent, e);
                     }
                 } catch (Exception e) {
                     if (permanent) {
@@ -120,7 +119,7 @@ public class NetworkClient extends AbstractNetworkService {
                          * 单次运行的Server则启动失败时打印错误堆栈信息
                          */
                         status = Status.STOPPED;
-                        log.error("The client[{}] connect to {}:{} failed with permanent = {}", name, port, e, permanent);
+                        log.error("The client[{}] connect to {}:{} failed with permanent = {}", name, host, port, permanent, e);
                     }
                 }
             }
@@ -135,9 +134,9 @@ public class NetworkClient extends AbstractNetworkService {
             log.info("shutdown client[name: {}, target: {}:{}] result: ", name, host, port, result);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.error("shutdown client[name: {}, target: {}:{}] error", name, port, e);
+                log.error("shutdown client[name: {}, target: {}:{}] error", name, host, port, e);
             } else {
-                log.warn("shutdown client[name: {}, target: {}:{}] error message: {}", name, port, e.getMessage());
+                log.warn("shutdown client[name: {}, target: {}:{}] error message: {}", name, host, port, e.getMessage());
             }
         }
     }
