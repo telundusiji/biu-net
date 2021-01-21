@@ -26,4 +26,7 @@ public class ClientInfo {
     private String name;
     @Sensitive
     private String password;
+    @Sensitive
+    private String privateKey;
+    private String publicKey;
 }

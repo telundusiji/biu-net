@@ -5,6 +5,7 @@ biu-net:
     server-host: 127.0.0.1
     server-port: 8081
     password: 123456
+    public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDWNmfSask3hEGLbP571PiEeclmYAA/4eQWfCGItRKtiYmQuVRnWkc6NE1nxJkhkXjOHwVNdphdU3okkbGMBZEg5rNNKej6lwVC66qm6jU1xGnu+dbTHe7iieyIIKxQKi9QwmWLru9zbWAKVci9Lc3Sg7Rg6O4TLZHpPRlF1Nsl9QIDAQAB
 
 server:
   port: 8070

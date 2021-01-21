@@ -23,6 +23,8 @@ public class ClientContextConfig {
     private Integer serverPort;
     @Value("${biu-net.client-info.password}")
     private String password;
+    @Value("${biu-net.client-info.public-key}")
+    private String publicKey;
 
     @Bean
     public ClientContext clientContext() {
@@ -32,6 +34,7 @@ public class ClientContextConfig {
                 .password(password)
                 .serverHost(serverHost)
                 .serverPort(serverPort)
+                .publicKey(publicKey)
                 .build();
         return new ClientContext(info);
     }

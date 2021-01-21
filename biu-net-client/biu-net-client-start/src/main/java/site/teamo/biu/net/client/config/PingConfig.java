@@ -1,5 +1,6 @@
 package site.teamo.biu.net.client.config;
 
+import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +21,10 @@ public class PingConfig {
 
     @Scheduled(cron = "0 * * * * ?")
     public void ping() {
-        clientContext.getClient().getNetworkClient().getChannel().writeAndFlush(Ping.Data.buildData(NetUtil.myHost()));
+        Channel channel = clientContext.getClient().getNetworkClient().getChannel();
+        if (channel != null) {
+            channel.writeAndFlush(Ping.Data.buildData(NetUtil.myHost()));
+        }
     }
 
 }

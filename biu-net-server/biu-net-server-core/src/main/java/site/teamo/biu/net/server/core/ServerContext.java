@@ -1,10 +1,10 @@
 package site.teamo.biu.net.server.core;
 
 import io.netty.channel.ChannelHandlerContext;
+import site.teamo.biu.net.common.enums.YesNo;
 import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.common.info.ProxyInfo;
 import site.teamo.biu.net.common.info.ProxyServerInfo;
-import site.teamo.biu.net.common.enums.YesNo;
 import site.teamo.biu.net.common.util.BiuNetApplicationUtil;
 import site.teamo.biu.net.common.util.BiuNetBeanUtil;
 
@@ -114,9 +114,19 @@ public class ServerContext {
         MockClient mockClient = clients.get(clientId);
         mockClient.getInfo().setOnline(YesNo.YES.type);
         mockClient.setCtx(ctx);
+        clients.put(ctx.channel().id().asLongText(), mockClient);
     }
 
-    public MockClient getClient(String clientId) {
-        return clients.get(clientId);
+    public void offLine(String key) {
+        MockClient mockClient = clients.get(key);
+        mockClient.getInfo().setOnline(YesNo.NO.type);
+        clients.remove(mockClient.getCtx().channel().id().asLongText());
+        mockClient.getCtx().disconnect();
+        mockClient.getCtx().close();
+        mockClient.setCtx(null);
+    }
+
+    public MockClient getClient(String key) {
+        return clients.get(key);
     }
 }

@@ -3,8 +3,6 @@ package site.teamo.biu.net.common.util;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -53,7 +51,7 @@ public class NetworkServer extends AbstractNetworkService {
             while (Status.STARTED.equals(status)) {
                 try {
                     if (!first) {
-                        log.info("Retry start public server after 5 seconds");
+                        log.info("Retry start server[{}] after 5 seconds", name);
                         Thread.sleep(5000L);
                     }
                     first = false;

@@ -21,4 +21,6 @@ public class ClientVO {
 
     private String name;
 
+    private String publicKey;
+
 }

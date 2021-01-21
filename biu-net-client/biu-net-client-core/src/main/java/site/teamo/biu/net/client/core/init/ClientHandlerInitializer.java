@@ -74,7 +74,7 @@ public class ClientHandlerInitializer extends ChannelInitializer<SocketChannel> 
             ctx.writeAndFlush(Login.Request.builder()
                     .id(client.getInfo().getId())
                     .name(client.getInfo().getName())
-                    .password(client.getInfo().getPassword())
+                    .password(client.getInfo().getEncryptPassword())
                     .build()
                     .buildData());
             super.channelActive(ctx);
@@ -94,7 +94,11 @@ public class ClientHandlerInitializer extends ChannelInitializer<SocketChannel> 
          * @return
          */
         public void handleLoginResponse(ChannelHandlerContext ctx, BiuNetMessage<Login.Response> message) {
-            log.info("Client login {}, {}", message.getContent().getResult(), message.getContent().getMsg());
+            if (Login.LoginResult.FAILED.equals(message.getContent().getResult())) {
+                log.error("Client login {}, {}", message.getContent().getResult(), message.getContent().getMsg());
+            } else {
+                log.error("Client login {} ", message.getContent().getResult());
+            }
         }
 
         /**

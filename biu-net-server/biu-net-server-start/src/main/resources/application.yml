@@ -9,7 +9,7 @@ biu-net:
 logging:
   level:
     org: info
-    site: info
+    site: debug
 
 spring:
   datasource:

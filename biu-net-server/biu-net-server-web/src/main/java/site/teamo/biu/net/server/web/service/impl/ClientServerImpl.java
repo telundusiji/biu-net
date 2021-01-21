@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.common.exception.ErrorCode;
+import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.common.util.BiuNetBeanUtil;
+import site.teamo.biu.net.common.util.MD5Util;
+import site.teamo.biu.net.common.util.RSAUtil;
 import site.teamo.biu.net.server.web.dao.ClientMapper;
 import site.teamo.biu.net.server.web.pojo.bo.ClientBO;
 import site.teamo.biu.net.server.web.pojo.vo.ClientVO;
@@ -49,6 +51,9 @@ public class ClientServerImpl implements ClientService {
         try {
             ClientInfo info = BiuNetBeanUtil.copyBean(clientBO, ClientInfo.class);
             info.setId(UUID.randomUUID().toString());
+            info.setPassword(MD5Util.toMD5(clientBO.getPassword()));
+            RSAUtil.RSAKey rsaKey = RSAUtil.generateRSAKey();
+            info.setPrivateKey(rsaKey.getPrivateKey()).setPublicKey(rsaKey.getPublicKey());
             clientMapper.insert(info);
             return info;
         } catch (Exception e) {

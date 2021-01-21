@@ -8,7 +8,9 @@ import site.teamo.biu.net.common.annoation.Sensitive;
 import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.client.core.init.ClientHandlerInitializer;
 import site.teamo.biu.net.common.util.NetworkClient;
+import site.teamo.biu.net.common.util.RSAUtil;
 
+import java.nio.charset.Charset;
 import java.util.function.Supplier;
 
 /**
@@ -28,6 +30,7 @@ public class Client {
     public Client(Info info) {
         this.info = info;
         this.networkClient = NetworkClient.Builder.create()
+                .name(info.getName())
                 .host(info.getServerHost())
                 .port(info.getServerPort())
                 .initializer(new ClientHandlerInitializer(this))
@@ -58,7 +61,12 @@ public class Client {
         private String password;
         private String serverHost;
         private Integer serverPort;
+        private String publicKey;
         private Supplier<String> status;
+
+        public String getEncryptPassword() throws Exception {
+            return RSAUtil.encrypt(password, publicKey, Charset.defaultCharset());
+        }
 
         public String getName() {
             if (StringUtils.isBlank(name)) {

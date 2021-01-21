@@ -20,6 +20,7 @@
         <module>biu-net-client</module>
         <module>biu-net-learning</module>
         <module>biu-net-common</module>
+        <module>biu-net-rpc</module>
     </modules>
 
     <properties>
