@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import site.teamo.biu.net.common.annoation.Alias;
+import site.teamo.biu.net.common.enums.YesNo;
 
 /**
  * @author 爱做梦的锤子
@@ -16,6 +18,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class ProxyVO {
+    @Alias("proxyId")
+    private String id;
     /**
      * 目标主机名
      */
@@ -27,6 +31,11 @@ public class ProxyVO {
     private Integer targetPort;
 
     /**
+     * 是否启用
+     */
+    private Integer enable;
+
+    /**
      * 代理服务器
      */
     private ProxyServerVO proxyServer;
@@ -35,4 +44,8 @@ public class ProxyVO {
      * 客户端
      */
     private ClientVO client;
+
+    public String getEnable() {
+        return YesNo.typeOf(enable).isYes("yes", "no");
+    }
 }

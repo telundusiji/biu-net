@@ -15,6 +15,7 @@
         <module>biu-net-server-core</module>
         <module>biu-net-server-web</module>
         <module>biu-net-server-start</module>
+        <module>biu-net-server-ui</module>
     </modules>
 
     <dependencies>
@@ -42,6 +43,8 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.1.5</version>
         </dependency>
+
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

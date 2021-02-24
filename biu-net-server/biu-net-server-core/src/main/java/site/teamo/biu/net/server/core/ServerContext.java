@@ -39,11 +39,7 @@ public class ServerContext {
          */
         clients.putAll(
                 clientInfos.stream()
-                        .map(info -> {
-                            MockClient.Info mc = MockClient.Info.builder().build();
-                            BiuNetBeanUtil.copyBean(info, mc);
-                            return mc.buildClient();
-                        })
+                        .map(info -> BiuNetBeanUtil.copyBean(info, MockClient.Info.builder().build()).buildClient())
                         .collect(Collectors.toMap(client -> client.getInfo().getId(), client -> client))
         );
 

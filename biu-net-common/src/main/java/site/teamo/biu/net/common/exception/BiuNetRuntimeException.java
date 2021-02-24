@@ -10,34 +10,34 @@ package site.teamo.biu.net.common.exception;
  */
 public class BiuNetRuntimeException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private ResponseCode errorCode;
 
-    public BiuNetRuntimeException(ErrorCode errorCode) {
+    public BiuNetRuntimeException(ResponseCode errorCode) {
         super(errorCode.description());
         this.errorCode = errorCode;
     }
 
-    public BiuNetRuntimeException(ErrorCode errorCode, String message) {
+    public BiuNetRuntimeException(ResponseCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
 
-    public BiuNetRuntimeException(ErrorCode errorCode, String message, Throwable cause) {
+    public BiuNetRuntimeException(ResponseCode errorCode, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = errorCode;
     }
 
-    public BiuNetRuntimeException(ErrorCode errorCode, Throwable cause) {
+    public BiuNetRuntimeException(ResponseCode errorCode, Throwable cause) {
         super(errorCode.description(), cause);
         this.errorCode = errorCode;
     }
 
-    protected BiuNetRuntimeException(ErrorCode errorCode, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected BiuNetRuntimeException(ResponseCode errorCode, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
+    public ResponseCode getErrorCode() {
         return errorCode;
     }
 }

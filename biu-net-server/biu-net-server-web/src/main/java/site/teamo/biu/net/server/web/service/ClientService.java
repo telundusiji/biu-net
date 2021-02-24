@@ -1,10 +1,9 @@
 package site.teamo.biu.net.server.web.service;
 
+import com.github.pagehelper.PageInfo;
 import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.server.web.pojo.bo.ClientBO;
 import site.teamo.biu.net.server.web.pojo.vo.ClientVO;
-
-import java.util.List;
 
 /**
  * @author 爱做梦的锤子
@@ -17,7 +16,7 @@ public interface ClientService {
      *
      * @return
      */
-    List<ClientVO> queryAll();
+    PageInfo<ClientVO> queryAll(int pageNo, int pageSize);
 
     /**
      * 创建客户端

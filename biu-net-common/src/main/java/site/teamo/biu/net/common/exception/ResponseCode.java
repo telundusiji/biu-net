@@ -4,9 +4,11 @@ package site.teamo.biu.net.common.exception;
  * @author 爱做梦的锤子
  * @create 2020/12/23
  */
-public interface ErrorCode {
+public interface ResponseCode {
 
-    String code();
+    int OK = 0;
+
+    Integer code();
 
     String description();
 
@@ -34,21 +36,21 @@ public interface ErrorCode {
         return new BiuNetException(this, message, e);
     }
 
-    enum BUSINESS implements ErrorCode {
-        QUERY_ERROR("B001", "Null input parameter"),
-        CREATE_ERROR("B002", "Null input parameter"),
-        UPDATE_ERROR("B002", "Null input parameter");
+    enum BUSINESS implements ResponseCode {
+        QUERY_ERROR(1001, "Null input parameter"),
+        CREATE_ERROR(1002, "Null input parameter"),
+        UPDATE_ERROR(1003, "Null input parameter");
 
-        public final String code;
+        public final Integer code;
         public final String description;
 
-        BUSINESS(String code, String description) {
+        BUSINESS(Integer code, String description) {
             this.code = code;
             this.description = description;
         }
 
         @Override
-        public String code() {
+        public Integer code() {
             return code;
         }
 
@@ -58,21 +60,21 @@ public interface ErrorCode {
         }
     }
 
-    enum PARAMETER implements ErrorCode {
-        NULL_PARAMETER("P001", "Null input parameter"),
-        MISSING_PARAMETER("P002", "Missing input parameter"),
-        BAD_PARAMETER("P003", "Wrong parameter input");
+    enum PARAMETER implements ResponseCode {
+        NULL_PARAMETER(2001, "Null input parameter"),
+        MISSING_PARAMETER(2002, "Missing input parameter"),
+        BAD_PARAMETER(2003, "Wrong parameter input");
 
-        public final String code;
+        public final Integer code;
         public final String description;
 
-        PARAMETER(String code, String description) {
+        PARAMETER(Integer code, String description) {
             this.code = code;
             this.description = description;
         }
 
         @Override
-        public String code() {
+        public Integer code() {
             return code;
         }
 
@@ -82,27 +84,27 @@ public interface ErrorCode {
         }
     }
 
-    enum RESOURCE implements ErrorCode {
-        UNKNOWN_RESOURCE_ERROR("R000", "Unknown resource error"),
+    enum RESOURCE implements ResponseCode {
+        UNKNOWN_RESOURCE_ERROR(3001, "Unknown resource error"),
 
-        RESOURCE_HAS_EXISTED("R001", "Resource already exists"),
+        RESOURCE_HAS_EXISTED(3002, "Resource already exists"),
 
-        RESOURCE_NOT_EXISTS("R002", "The resource does not exist"),
+        RESOURCE_NOT_EXISTS(3003, "The resource does not exist"),
 
-        READ_RESOURCE_ERROR("R003", "Read resource error"),
+        READ_RESOURCE_ERROR(3004, "Read resource error"),
 
-        WRITE_RESOURCE_ERROR("R004", "Write resource error");
+        WRITE_RESOURCE_ERROR(3005, "Write resource error");
 
-        public final String code;
+        public final Integer code;
         public final String description;
 
-        RESOURCE(String code, String description) {
+        RESOURCE(Integer code, String description) {
             this.code = code;
             this.description = description;
         }
 
         @Override
-        public String code() {
+        public Integer code() {
             return code;
         }
 

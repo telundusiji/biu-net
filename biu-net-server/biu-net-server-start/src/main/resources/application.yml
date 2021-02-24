@@ -9,7 +9,7 @@ biu-net:
 logging:
   level:
     org: info
-    site: debug
+    site: info
 
 spring:
   datasource:
@@ -31,4 +31,11 @@ spring:
       connection-test-query: select 1
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 
+server:
+  port: 2376

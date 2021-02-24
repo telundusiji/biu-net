@@ -15,6 +15,8 @@ import java.util.Date;
 @Data
 @Builder
 @Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProxyServerVO {
 
     /**

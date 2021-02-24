@@ -1,67 +1,87 @@
 package site.teamo.biu.net.common.util;
 
+import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
+import site.teamo.biu.net.common.exception.ResponseCode;
+
+import java.util.List;
 
 
 @Data
 @Builder
 @NoArgsConstructor
-public class BiuNetJSONResult {
-    // 响应业务状态
-    private Integer code;
+@AllArgsConstructor
+public class BiuNetJSONResult<T> {
+    /**
+     * 状态码
+     */
+    private int code;
 
-    // 响应消息
+    /**
+     * 响应消息
+     */
     private String msg;
 
-    // 响应中的数据
-    private Object data;
+    /**
+     * 响应数据
+     */
+    private T data;
 
-
-    public static BiuNetJSONResult build(Integer status, String msg, Object data) {
-        return new BiuNetJSONResult(status, msg, data);
+    public static BiuNetJSONResult ok() {
+        return BiuNetJSONResult.builder()
+                .code(ResponseCode.OK)
+                .build();
     }
 
     public static BiuNetJSONResult ok(Object data) {
-        return new BiuNetJSONResult(data);
+        return BiuNetJSONResult.builder()
+                .code(ResponseCode.OK)
+                .data(data)
+                .build();
     }
 
-    public static BiuNetJSONResult ok() {
-        return new BiuNetJSONResult(null);
+    public static <T> BiuNetJSONResult<T> okType(T data) {
+        return BiuNetJSONResult.<T>builder()
+                .code(ResponseCode.OK)
+                .data(data)
+                .build();
     }
 
-    public static BiuNetJSONResult errorMsg(String msg) {
-        return new BiuNetJSONResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), msg, null);
+    public static BiuNetJSONResult error(int code, Object data) {
+        return BiuNetJSONResult.builder()
+                .code(code)
+                .data(data)
+                .build();
     }
 
-    public static BiuNetJSONResult errorMap(Object data) {
-        return new BiuNetJSONResult(HttpStatus.NOT_IMPLEMENTED.value(), "error", data);
+    public static <E> BiuNetJSONResult<PageData<E>> ok(PageInfo<E> pageInfo) {
+        return BiuNetJSONResult.PageData.<E>builder()
+                .list(pageInfo.getList())
+                .count(pageInfo.getTotal())
+                .pageNo(pageInfo.getPageNum())
+                .pageSize(pageInfo.getPageSize())
+                .build().buildJSONResult();
     }
 
-    public static BiuNetJSONResult errorTokenMsg(String msg) {
-        return new BiuNetJSONResult(HttpStatus.BAD_GATEWAY.value(), msg, null);
-    }
 
-    public static BiuNetJSONResult errorException(String msg) {
-        return new BiuNetJSONResult(555, msg, null);
-    }
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PageData<E> {
+        private long count;
+        private int pageSize;
+        private int pageNo;
+        private List<E> list;
 
-    public static BiuNetJSONResult errorUserQQ(String msg) {
-        return new BiuNetJSONResult(556, msg, null);
+        public BiuNetJSONResult<PageData<E>> buildJSONResult() {
+            return BiuNetJSONResult.<PageData<E>>builder()
+                    .code(ResponseCode.OK)
+                    .data(this)
+                    .build();
+        }
     }
-
-    public BiuNetJSONResult(Integer status, String msg, Object data) {
-        this.code = status;
-        this.msg = msg;
-        this.data = data;
-    }
-
-    public BiuNetJSONResult(Object data) {
-        this.code = HttpStatus.OK.value();
-        this.msg = "OK";
-        this.data = data;
-    }
-
 }

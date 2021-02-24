@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -46,6 +47,7 @@ public class ProxyBO {
      */
     @ApiModelProperty(value = "目标服务端口号", name = "targetPort", example = "80", required = true)
     @NotNull(message = "Target port cannot be empty")
+    @Range(min = 1, max = 65535, message = "The available port range is 1 to 65535")
     private Integer targetPort;
 
 }

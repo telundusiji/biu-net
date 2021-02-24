@@ -161,8 +161,9 @@ public class BiuNetBeanUtil {
      * @param source 源对象
      * @param target 目标对象
      */
-    public static void copyBean(Object source, Object target) {
+    public static <T> T copyBean(Object source, T target) {
         copyBean(source, target, true);
+        return target;
     }
 
     /**

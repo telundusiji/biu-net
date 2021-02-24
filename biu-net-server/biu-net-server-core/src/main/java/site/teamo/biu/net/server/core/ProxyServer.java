@@ -87,4 +87,11 @@ public class ProxyServer {
             return status.get();
         }
     }
+
+    public static void main(String[] args) {
+        Info.builder()
+                .id("123")
+                .port(8081)
+                .build().buildProxyServer().start();
+    }
 }

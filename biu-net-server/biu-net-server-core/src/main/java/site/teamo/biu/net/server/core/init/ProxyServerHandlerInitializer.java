@@ -6,6 +6,9 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
+import io.netty.handler.traffic.ChannelTrafficShapingHandler;
+import io.netty.handler.traffic.GlobalChannelTrafficCounter;
+import io.netty.handler.traffic.GlobalChannelTrafficShapingHandler;
 import lombok.extern.slf4j.Slf4j;
 import site.teamo.biu.net.common.message.BiuNetMessage;
 import site.teamo.biu.net.common.message.CloseProxyClient;
@@ -13,6 +16,10 @@ import site.teamo.biu.net.common.message.PackageData;
 import site.teamo.biu.net.server.core.Proxy;
 import site.teamo.biu.net.server.core.ProxyServer;
 import site.teamo.biu.net.server.core.ServerContext;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
 
 /**
  * @author 爱做梦的锤子
