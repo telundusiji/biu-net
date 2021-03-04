@@ -1,4 +1,4 @@
-package site.teamo.biu.net.server.config;
+package site.teamo.biu.net.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,18 +13,20 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 /**
  * @author 爱做梦的锤子
- * @create 2020/11/13
+ * @create 2020/8/4
  */
-
 @Configuration
 @EnableOpenApi
-public class Swagger3Config {
+public class SwaggerConfig {
 
-    @Value("${biu-net.swagger.enable}")
+    @Value("${biu-net.swagger.enable:false}")
     private boolean swaggerEnable;
 
     @Value("${biu-net.project.version}")
     private String version;
+
+    @Value("${biu-net.swagger.base-package}")
+    private String basePackage;
 
     @Bean
     public Docket api() {
@@ -32,7 +34,7 @@ public class Swagger3Config {
                 .apiInfo(apiInfo())
                 .enable(swaggerEnable)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("site.teamo.biu.net.server.web.controller"))
+                .apis(RequestHandlerSelectors.basePackage(basePackage))
                 .paths(PathSelectors.any())
                 .build();
     }

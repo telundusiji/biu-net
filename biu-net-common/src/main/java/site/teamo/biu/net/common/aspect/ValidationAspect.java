@@ -1,4 +1,4 @@
-package site.teamo.biu.net.server.aspect;
+package site.teamo.biu.net.common.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.internal.engine.ValidatorImpl;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import site.teamo.biu.net.common.exception.ResponseCode;
 import site.teamo.biu.net.common.util.BiuNetJSONResult;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 @Component
 @Aspect
 @Slf4j
-@Order(1)
 public class ValidationAspect {
 
     /**

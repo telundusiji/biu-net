@@ -1,17 +1,29 @@
+#user define configuration
 biu-net:
+  #swagger api configuration
   swagger:
     enable: true
+    base-package: site.teamo.biu.net.server.web.controller
+  #project configuration
   project:
     version: 1.0.0
+    debug: true
+  #Tcp port for client connect
   public-server:
     port: 8081
 
+#web server port
+server:
+  port: 2376
+
+#log configuration
 logging:
   level:
     org: info
     site: info
 
 spring:
+  #mysql datasource configuration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/biu_net?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
@@ -21,21 +33,23 @@ spring:
     schema: classpath:schema.sql
     initialization-mode: always
     hikari:
-      connection-timeout: 30000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
-      minimum-idle: 5           #最小连接数
-      maximum-pool-size: 20     #最大连接数
-      auto-commit: true         #事务自动提交
-      idle-timeout: 600000      #连接超时的最大时长（毫秒），超时则被释放（retired）
-      pool-name: DataSourceHikariCP #连接池名称
-      max-lifetime: 1800000     #连接生命时长，空闲未被使用超过最大时长则被释放
+      connection-timeout: 30000
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 600000
+      pool-name: DataSourceHikariCP
+      max-lifetime: 1800000
       connection-test-query: select 1
+
+#mybatis configuration
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+#page configuration
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
 
-server:
-  port: 2376
+

@@ -40,12 +40,10 @@ public class ProxyController {
     @Validation
     public BiuNetJSONResult list(@RequestParam(defaultValue = "1", required = false)
                                  @Min(value = 1, message = "PageNo must be greater than or equal to 1")
-                                 @ApiParam(value = "页码", example = "1")
-                                         Integer pageNo,
+                                 @ApiParam(value = "页码", example = "1") Integer pageNo,
                                  @RequestParam(defaultValue = "10", required = false)
                                  @Range(min = 5, max = 1000, message = "PageSize must be greater than or equal to 5 and less than or equal to 1000")
-                                 @ApiParam(value = "页面大小", example = "10")
-                                         Integer pageSize) {
+                                 @ApiParam(value = "页面大小", example = "10") Integer pageSize) {
         PageInfo<ProxyVO> proxyVOPageInfo = proxyService.queryAll(pageNo, pageSize);
         return BiuNetJSONResult.ok(proxyVOPageInfo);
     }

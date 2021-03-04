@@ -10,9 +10,9 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.teamo.biu.net.common.annoation.Validation;
-import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.common.exception.BiuNetRuntimeException;
 import site.teamo.biu.net.common.exception.ResponseCode;
+import site.teamo.biu.net.common.info.ClientInfo;
 import site.teamo.biu.net.common.util.BiuNetBeanUtil;
 import site.teamo.biu.net.common.util.BiuNetJSONResult;
 import site.teamo.biu.net.server.core.MockClient;
@@ -22,7 +22,6 @@ import site.teamo.biu.net.server.web.pojo.vo.ClientVO;
 import site.teamo.biu.net.server.web.service.ClientService;
 
 import javax.validation.constraints.Min;
-import java.util.List;
 
 /**
  * @author 爱做梦的锤子
@@ -44,12 +43,10 @@ public class ClientController {
     @GetMapping("/list")
     public BiuNetJSONResult list(@RequestParam(defaultValue = "1", required = false)
                                  @Min(value = 1, message = "PageNo must be greater than or equal to 1")
-                                 @ApiParam(value = "页码", example = "1")
-                                         Integer pageNo,
+                                 @ApiParam(value = "页码", example = "1") Integer pageNo,
                                  @RequestParam(defaultValue = "10", required = false)
                                  @Range(min = 5, max = 1000, message = "PageSize must be greater than or equal to 5 and less than or equal to 1000")
-                                 @ApiParam(value = "页面大小", example = "10")
-                                         Integer pageSize) {
+                                 @ApiParam(value = "页面大小", example = "10") Integer pageSize) {
         PageInfo<ClientVO> clientVOS = clientService.queryAll(pageNo, pageSize);
         return BiuNetJSONResult.ok(clientVOS);
     }
