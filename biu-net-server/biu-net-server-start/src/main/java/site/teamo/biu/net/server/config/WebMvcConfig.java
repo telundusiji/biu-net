@@ -14,24 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @create 2020/11/13
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/swagger-ui/**", "/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .addResourceLocations("classpath:/static/")
-                .resourceChain(false);
-    }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/swagger-ui/")
-                .setViewName("forward:/swagger-ui/index.html");
-
-    }
-
+public class WebMvcConfig{
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
