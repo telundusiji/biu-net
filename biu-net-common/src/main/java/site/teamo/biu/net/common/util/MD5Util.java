@@ -1,6 +1,7 @@
 package site.teamo.biu.net.common.util;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +13,9 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Util {
 
     public static String toMD5(String strValue) throws NoSuchAlgorithmException {
+        if (StringUtils.isEmpty(strValue)) {
+            return null;
+        }
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         return Base64.encodeBase64String(md5.digest(strValue.getBytes()));
     }

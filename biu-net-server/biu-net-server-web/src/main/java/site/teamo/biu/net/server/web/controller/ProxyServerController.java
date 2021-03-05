@@ -17,7 +17,6 @@ import site.teamo.biu.net.server.web.pojo.vo.ProxyServerVO;
 import site.teamo.biu.net.server.web.service.ProxyServerService;
 
 import javax.validation.constraints.Min;
-import java.util.List;
 
 /**
  * @author 爱做梦的锤子
@@ -25,7 +24,7 @@ import java.util.List;
  */
 @Api(value = "代理服务端管理", tags = "代理服务端管理")
 @RestController
-@RequestMapping("proxyServer")
+@RequestMapping("/api/proxyServer")
 @Slf4j
 public class ProxyServerController {
 

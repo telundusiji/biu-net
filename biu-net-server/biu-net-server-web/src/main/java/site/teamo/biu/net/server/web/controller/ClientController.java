@@ -29,7 +29,7 @@ import javax.validation.constraints.Min;
  */
 @Api(value = "客户端管理", tags = "客户端管理")
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/api/client")
 @Slf4j
 public class ClientController {
 

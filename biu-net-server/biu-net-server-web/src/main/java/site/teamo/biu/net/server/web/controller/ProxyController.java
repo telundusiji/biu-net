@@ -25,7 +25,7 @@ import javax.validation.constraints.Min;
  */
 @Api(value = "代理管理", tags = "代理管理")
 @RestController
-@RequestMapping("proxy")
+@RequestMapping("/api/proxy")
 @Slf4j
 public class ProxyController {
 

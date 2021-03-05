@@ -45,4 +45,8 @@ public class BiuNetApplicationUtil implements ApplicationContextAware {
     public static <T> T getBean(Class<T> tClass) {
         return context.getBean(tClass);
     }
+
+    public static <T> T getBean(String name, Class<T> tClass) {
+        return context.getBean(name, tClass);
+    }
 }

@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.teamo.biu.net.common.exception.ResponseCode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -50,6 +52,13 @@ public class BiuNetJSONResult<T> {
                 .build();
     }
 
+    public static BiuNetJSONResult error(int code, String msg) {
+        return BiuNetJSONResult.builder()
+                .code(code)
+                .msg(msg)
+                .build();
+    }
+
     public static BiuNetJSONResult error(int code, Object data) {
         return BiuNetJSONResult.builder()
                 .code(code)
@@ -66,6 +75,22 @@ public class BiuNetJSONResult<T> {
                 .build().buildJSONResult();
     }
 
+    public static OkMap okMap() {
+        return new OkMap();
+    }
+
+    public static class OkMap {
+        private HashMap<String, Object> data = new HashMap<>();
+
+        public OkMap put(String key, Object value) {
+            data.put(key, value);
+            return this;
+        }
+
+        public BiuNetJSONResult<Map<String, Object>> build() {
+            return BiuNetJSONResult.ok(data);
+        }
+    }
 
     @Data
     @Builder

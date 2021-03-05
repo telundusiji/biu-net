@@ -1,0 +1,56 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "title": "主页",
+      "icon": "layui-icon-home",
+      "jump": "/"
+    },
+    {
+      "name": "client",
+      "title": "客户端",
+      "icon": "layui-icon-layer",
+      "list": [
+        {
+          "title": "所有客户端",
+          "jump": "client/list"
+        },
+        {
+          "title": "添加客户端",
+          "jump": "client/add"
+        }
+      ]
+    },
+    {
+      "name": "proxyServer",
+      "title": "代理服务端",
+      "icon": "layui-icon-engine",
+      "list": [
+        {
+          "title": "所有客户端",
+          "jump": "client/list"
+        },
+        {
+          "title": "添加客户端",
+          "jump": "client/add"
+        }
+      ]
+    },
+    {
+      "name": "proxy",
+      "title": "代理",
+      "icon": "layui-icon-release",
+      "list": [
+        {
+          "title": "所有客户端",
+          "jump": "client/list"
+        },
+        {
+          "title": "添加客户端",
+          "jump": "client/add"
+        }
+      ]
+    }
+  ]
+}
