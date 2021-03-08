@@ -693,7 +693,8 @@ html, body, #LAY_app {
 .layui-layout-admin .layui-header {
     border-bottom: 1px solid #f6f6f6;
     box-sizing: border-box;
-    background-color: #fff;
+    /*background-color: #fff;*/
+    background: rgba(200,200,200,0.5);
 }
 
 .layui-layout-admin .layui-header a,

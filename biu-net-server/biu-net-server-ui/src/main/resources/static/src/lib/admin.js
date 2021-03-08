@@ -220,7 +220,7 @@ layui.define('view', function (exports) {
                     , '{background-color:{{d.color.selected}} !important;}'
 
                     //logo
-                    , '.layui-layout-admin .layui-logo{background-color:{{d.color.logo || d.color.main}} !important;}'
+                    , '.layui-layout-admin .layui-logo{background:rgba(200,200,200,0.5) !important;}'
 
                     //头部色
                     , '{{# if(d.color.header){ }}'

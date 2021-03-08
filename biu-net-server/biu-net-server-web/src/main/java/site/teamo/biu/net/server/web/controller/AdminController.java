@@ -52,8 +52,10 @@ public class AdminController {
 
 
     @ApiOperation("管理员登出")
-    @PostMapping("/logout")
-    public BiuNetJSONResult logout(@RequestParam String token) {
+    @GetMapping("/logout")
+    public BiuNetJSONResult logout(
+            @ApiParam("用户token")
+            @RequestParam String token) {
         userCache.invalidate(token);
         return BiuNetJSONResult.ok();
     }
