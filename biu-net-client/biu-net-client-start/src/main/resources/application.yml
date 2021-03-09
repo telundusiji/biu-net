@@ -1,4 +1,10 @@
 biu-net:
+  project:
+    version: 1.0.0
+    debug: true
+  swagger:
+    enable: true
+    base-package: site.teamo.biu.net.client
   client-info:
     id: 461875bb-e5da-4a10-8d19-68613e18a2db
     name: pc-xxx

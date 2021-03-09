@@ -104,16 +104,16 @@ public class NetworkServer extends AbstractNetworkService {
         }
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     @Data
     @Accessors(fluent = true)
     public static class Builder {
         public int port;
         public String name;
         private ChannelInitializer initializer;
-
-        public static Builder create() {
-            return new Builder();
-        }
 
         public NetworkServer buildServer() {
             return new NetworkServer(this);

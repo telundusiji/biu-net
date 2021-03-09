@@ -27,7 +27,7 @@ public class PublicServer {
 
     public PublicServer(Info info) {
         this.info = info;
-        networkServer = NetworkServer.Builder.create()
+        networkServer = NetworkServer.builder()
                 .name(info.getName())
                 .port(info.getPort())
                 .initializer(new PublicServerHandlerInitializer(this))

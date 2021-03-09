@@ -30,7 +30,7 @@ public class ProxyServer {
 
     public ProxyServer(Info info) {
         this.info = info;
-        this.networkServer = NetworkServer.Builder.create()
+        this.networkServer = NetworkServer.builder()
                 .name(info.getName())
                 .port(info.getPort())
                 .initializer(new ProxyServerHandlerInitializer(this))

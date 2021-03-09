@@ -29,7 +29,7 @@ public class Client {
 
     public Client(Info info) {
         this.info = info;
-        this.networkClient = NetworkClient.Builder.create()
+        this.networkClient = NetworkClient.builder()
                 .name(info.getName())
                 .host(info.getServerHost())
                 .port(info.getServerPort())

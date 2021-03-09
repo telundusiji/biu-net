@@ -35,7 +35,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function (exports) {
                 , logout: 400 //登录状态失效的状态码
             }
             , msgName: 'msg' //状态信息的字段名称
-            , dataName: 'data' //数据详情的字段名称
+            , dataName: 'data'
         }
 
         //独立页面路由，可随意添加（无需写参数）
@@ -131,4 +131,97 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function (exports) {
             , initColorIndex: 0
         }
     });
+});
+
+layui.use(['table', 'admin'], function () {
+    var setter = layui.setter, admin = layui.admin, table = layui.table, $ = layui.jquery;
+    var headers = {};
+    headers[setter.request.tokenName] = layui.data(setter.tableName)[layui.setter.request.tokenName];
+    console.log(headers)
+    console.log(layui.data(setter.tableName)[layui.setter.request.tokenName])
+    table.set({
+        request: {
+            pageName: 'pageNo', //页码的参数名称，默认：page
+            limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        },
+        response: {
+            statusName: setter.response.statusName //规定数据状态的字段名称，默认：code
+            , statusCode: setter.response.statusCode.ok //规定成功的状态码，默认：0
+            , msgName: setter.response.msgName //规定状态信息的字段名称，默认：msg
+            , dataName: setter.response.dataName //规定数据列表的字段名称，默认：data
+            , countName: 'count' //规定数据总数的字段名称，默认：count.这个根据自己项目设置
+        },
+        parseData: function (res) {
+            return {
+                "code": res.code,
+                "msg": res.msg,
+                "count": res.data.count,
+                "data": res.data.list
+            };
+        },
+        where: headers//table在地址中同时传递token
+    });
+    //同时更新储存的token和table的token
+    // var refreshToken = function (token) {
+    //     //请求成功后，写入 token
+    //     layui.data(setter.tableName, {
+    //         key: setter.request.tokenName
+    //         , value: token
+    //     });
+    //     headers[setter.request.tokenName] = token;
+    //     table.set({
+    //         where: headers//table在地址中同时传递token
+    //     });
+    // };
+    // $.ajaxSetup({
+    //     headers: headers,
+    //     error: function () {
+    //         layui.admin.popup({
+    //             title: '提示'
+    //             , area: ['250px']
+    //             , content: '系统出错,请稍后再试'
+    //             , btn: ['确定']
+    //             , yes: function (index) {
+    //                 layer.close(index);
+    //             }
+    //         });
+    //     },
+    //     complete: function (xhr) {
+    //
+    //         //从header取token
+    //         var token = xhr.getResponseHeader(setter.request.tokenName);
+    //         //token不为空,则保存
+    //         if (token != null && token.trim().length !== 0) {
+    //             refreshToken(token);
+    //         }
+    //         //返回有json格式数据，则从中取需要的参数
+    //         if (xhr.hasOwnProperty('responseJSON')) {
+    //             if (token == null || token.trim().length === 0) {
+    //                 //请求成功后，写入 access_token
+    //                 if (xhr.responseJSON.hasOwnProperty(setter.response.dataName)) {
+    //                     if (xhr.responseJSON[setter.response.dataName].hasOwnProperty(setter.request.tokenName)) {
+    //                         token = xhr.responseJSON[setter.response.dataName][setter.request.tokenName];
+    //                         if (token != null && token.trim().length !== 0) {
+    //                             refreshToken(token);
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //             if (xhr.responseJSON[setter.response.statusName] === setter.response.statusCode.logout) {
+    //                 layui.admin.popup({
+    //                     title: '提示'
+    //                     , area: ['250px']
+    //                     , content: xhr.responseJSON[setter.response.msgName] || '登录超时'
+    //                     , btn: ['确定']
+    //                     , yes: function (index) {
+    //                         layer.close(index);
+    //                     }
+    //                     , end: function () {
+    //                         admin.exit();
+    //                     }
+    //                 });
+    //             }
+    //         }
+    //     }
+    // });
 });

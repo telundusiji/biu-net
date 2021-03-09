@@ -22,11 +22,11 @@ public class CacheConfig {
     public Cache<String, String> userCache() {
         return CacheBuilder.newBuilder()
                 .maximumSize(2)
-                .expireAfterAccess(10, TimeUnit.SECONDS)
-                .expireAfterWrite(10, TimeUnit.SECONDS)
+                .expireAfterAccess(30, TimeUnit.MINUTES)
+                .expireAfterWrite(30, TimeUnit.MINUTES)
                 .removalListener(
                         (RemovalNotification<String, String> notification) ->
-                                log.info("User cache {}:{} has expired"))
+                                log.info("User cache {}:{} has expired", notification.getKey(), notification.getValue()))
                 .recordStats()
                 .build();
     }

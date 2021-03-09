@@ -146,6 +146,10 @@ public class NetworkClient extends AbstractNetworkService {
         return status;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     @Data
     @Accessors(fluent = true)
     public static class Builder {
@@ -153,10 +157,6 @@ public class NetworkClient extends AbstractNetworkService {
         private String host;
         private int port;
         private ChannelInitializer initializer;
-
-        public static Builder create() {
-            return new Builder();
-        }
 
         public NetworkClient buildClient() {
             return new NetworkClient(this);

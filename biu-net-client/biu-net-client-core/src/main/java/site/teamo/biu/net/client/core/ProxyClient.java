@@ -29,7 +29,7 @@ public class ProxyClient {
 
     public ProxyClient(Info info) {
         this.info = info;
-        networkClient = NetworkClient.Builder.create()
+        networkClient = NetworkClient.builder()
                 .name(info.getName())
                 .host(info.getTargetHost())
                 .port(info.getTargetPort())

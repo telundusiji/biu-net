@@ -22,6 +22,11 @@
             <artifactId>biu-net-server-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>site.teamo.biu</groupId>
+            <artifactId>biu-net-server-ui</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

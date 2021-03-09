@@ -65,8 +65,8 @@ layui.define(['laytpl', 'layer'], function(exports){
     
     options.data = options.data || {};
     options.headers = options.headers || {};
-    
     if(request.tokenName){
+      console.log("经过token的url:"+options.url)
       var sendData = typeof options.data === 'string' 
         ? JSON.parse(options.data) 
       : options.data;

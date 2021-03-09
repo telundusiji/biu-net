@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<title>客户端列表</title>
 
-</body>
-</html>
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>客户端</cite></a>
+        <a><cite>列表</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">客户端列表</div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="test-table-toolbar" lay-filter="test-table-toolbar"></table>
+                    <script type="text/html" id="test-table-toolbar-barDemo">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'table'], function () {
+        var admin = layui.admin
+            , table = layui.table;
+
+        table.render({
+            elem: '#test-table-toolbar'
+            , url: contextPath + '/api/client/list'
+            // , url: './json/user/table2.json'
+            , title: '客户端表'
+            , cols: [[
+                {field: 'id', title: 'ID'}
+                , {field: 'name', title: '名称'}
+                , {field: 'publicKey', title: '公钥'}
+                , {fixed: 'right', title: '操作', toolbar: '#test-table-toolbar-barDemo', width: 150}
+            ]],
+            page: true
+        });
+
+        //监听行工具事件
+        table.on('tool(test-table-toolbar)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.email
+                }, function (value, index) {
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+</script>
