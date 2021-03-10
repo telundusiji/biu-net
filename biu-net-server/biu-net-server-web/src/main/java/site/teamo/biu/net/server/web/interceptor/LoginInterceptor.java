@@ -27,6 +27,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         String token = request.getParameter("token");
         if (StringUtils.isEmpty(token)) {
+            token = request.getHeader("token");
+        }
+        if (StringUtils.isEmpty(token)) {
             returnJson(response);
             return false;
         }

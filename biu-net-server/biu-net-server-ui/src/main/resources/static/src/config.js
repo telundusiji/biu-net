@@ -162,66 +162,67 @@ layui.use(['table', 'admin'], function () {
         where: headers//table在地址中同时传递token
     });
     //同时更新储存的token和table的token
-    // var refreshToken = function (token) {
-    //     //请求成功后，写入 token
-    //     layui.data(setter.tableName, {
-    //         key: setter.request.tokenName
-    //         , value: token
-    //     });
-    //     headers[setter.request.tokenName] = token;
-    //     table.set({
-    //         where: headers//table在地址中同时传递token
-    //     });
-    // };
-    // $.ajaxSetup({
-    //     headers: headers,
-    //     error: function () {
-    //         layui.admin.popup({
-    //             title: '提示'
-    //             , area: ['250px']
-    //             , content: '系统出错,请稍后再试'
-    //             , btn: ['确定']
-    //             , yes: function (index) {
-    //                 layer.close(index);
-    //             }
-    //         });
-    //     },
-    //     complete: function (xhr) {
-    //
-    //         //从header取token
-    //         var token = xhr.getResponseHeader(setter.request.tokenName);
-    //         //token不为空,则保存
-    //         if (token != null && token.trim().length !== 0) {
-    //             refreshToken(token);
-    //         }
-    //         //返回有json格式数据，则从中取需要的参数
-    //         if (xhr.hasOwnProperty('responseJSON')) {
-    //             if (token == null || token.trim().length === 0) {
-    //                 //请求成功后，写入 access_token
-    //                 if (xhr.responseJSON.hasOwnProperty(setter.response.dataName)) {
-    //                     if (xhr.responseJSON[setter.response.dataName].hasOwnProperty(setter.request.tokenName)) {
-    //                         token = xhr.responseJSON[setter.response.dataName][setter.request.tokenName];
-    //                         if (token != null && token.trim().length !== 0) {
-    //                             refreshToken(token);
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //             if (xhr.responseJSON[setter.response.statusName] === setter.response.statusCode.logout) {
-    //                 layui.admin.popup({
-    //                     title: '提示'
-    //                     , area: ['250px']
-    //                     , content: xhr.responseJSON[setter.response.msgName] || '登录超时'
-    //                     , btn: ['确定']
-    //                     , yes: function (index) {
-    //                         layer.close(index);
-    //                     }
-    //                     , end: function () {
-    //                         admin.exit();
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     }
-    // });
+    var refreshToken = function (token) {
+        console.log("header刷新"+token)
+        //请求成功后，写入 token
+        layui.data(setter.tableName, {
+            key: setter.request.tokenName
+            , value: token
+        });
+        headers[setter.request.tokenName] = token;
+        table.set({
+            where: headers//table在地址中同时传递token
+        });
+    };
+    $.ajaxSetup({
+        headers: headers,
+        error: function () {
+            layui.admin.popup({
+                title: '提示'
+                , area: ['250px']
+                , content: '系统出错,请稍后再试'
+                , btn: ['确定']
+                , yes: function (index) {
+                    layer.close(index);
+                }
+            });
+        },
+        complete: function (xhr) {
+
+            //从header取token
+            var token = xhr.getResponseHeader(setter.request.tokenName);
+            //token不为空,则保存
+            if (token != null && token.trim().length !== 0) {
+                refreshToken(token);
+            }
+            //返回有json格式数据，则从中取需要的参数
+            if (xhr.hasOwnProperty('responseJSON')) {
+                if (token == null || token.trim().length === 0) {
+                    //请求成功后，写入 access_token
+                    if (xhr.responseJSON.hasOwnProperty(setter.response.dataName)) {
+                        if (xhr.responseJSON[setter.response.dataName].hasOwnProperty(setter.request.tokenName)) {
+                            token = xhr.responseJSON[setter.response.dataName][setter.request.tokenName];
+                            if (token != null && token.trim().length !== 0) {
+                                refreshToken(token);
+                            }
+                        }
+                    }
+                }
+                if (xhr.responseJSON[setter.response.statusName] === setter.response.statusCode.logout) {
+                    layui.admin.popup({
+                        title: '提示'
+                        , area: ['250px']
+                        , content: xhr.responseJSON[setter.response.msgName] || '登录超时'
+                        , btn: ['确定']
+                        , yes: function (index) {
+                            layer.close(index);
+                        }
+                        , end: function () {
+                            admin.exit();
+                        }
+                    });
+                }
+            }
+        }
+    });
 });

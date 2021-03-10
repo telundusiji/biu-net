@@ -25,7 +25,7 @@ public class ClientBO {
     @NotBlank(message = "客户端名称不能为空")
     private String name;
 
-    @ApiModelProperty(value = "客户端连接密钥",name = "password",example = "15a3303e-3f4d-4cac-9bc2-9757f093d759",required = true)
+    @ApiModelProperty(value = "客户端连接密钥",name = "password",example = "abc1234",required = true)
     @Pattern(regexp = "[0-9a-zA-Z\\-]{6,64}",message = "密码6-64位，由数字、字母和’-‘组成")
     private String password;
 }

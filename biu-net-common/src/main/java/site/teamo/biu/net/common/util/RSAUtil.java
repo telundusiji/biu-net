@@ -32,7 +32,7 @@ public class RSAUtil {
         // KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
         // 初始化密钥对生成器，密钥大小为96-1024位
-        keyPairGen.initialize(1024, new SecureRandom());
+        keyPairGen.initialize(1024, new SecureRandom(String.valueOf(System.nanoTime()).getBytes()));
         // 生成密钥对
         KeyPair keyPair = keyPairGen.generateKeyPair();
         return RSAKey.builder()

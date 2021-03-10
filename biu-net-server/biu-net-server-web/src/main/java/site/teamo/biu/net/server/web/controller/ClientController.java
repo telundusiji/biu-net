@@ -52,7 +52,7 @@ public class ClientController {
     }
 
     @ApiOperation(value = "创建一个客户端", notes = "创建一个客户端")
-    @PostMapping
+    @PostMapping("/create")
     @Validation
     public BiuNetJSONResult create(@RequestBody ClientBO clientBO) {
         try {
