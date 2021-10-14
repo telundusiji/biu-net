@@ -18,6 +18,9 @@
         <module>biu-net-server</module>
         <module>biu-net-client</module>
         <module>biu-net-common</module>
+        <module>http-proxy</module>
+        <module>intranet-penetration</module>
+        <module>common</module>
         <!--        <module>biu-net-rpc</module>-->
     </modules>
 
@@ -69,4 +72,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>

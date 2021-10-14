@@ -25,6 +25,19 @@ public class NetworkClient extends AbstractNetworkService {
     @Getter
     private Channel channel;
 
+    public Channel getChannelSync() throws InterruptedException {
+        if (channel != null) {
+            return channel;
+        }
+        long current = System.currentTimeMillis();
+        while (channel == null && System.currentTimeMillis() - current < 5000) {
+        }
+        while (channel == null) {
+            Thread.sleep(200);
+        }
+        return channel;
+    }
+
     /**
      * 创建一个客户端
      *
